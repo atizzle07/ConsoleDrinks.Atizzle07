@@ -1,4 +1,4 @@
-﻿using DrinksAPI.Models;
+using DrinksAPI.Models;
 using DrinksApp.Services;
 using Spectre.Console;
 using System.Reflection;
@@ -36,6 +36,7 @@ public class UI
     }
     public static async Task<string> GetCategoryChoice()
     {
+        // TODO - add exception handling here
         List<string> categoryMenu = await LoadCategories();
 
         Console.Clear();
@@ -48,6 +49,7 @@ public class UI
     }
     public static async Task<string> GetDrinkChoice(string category)
     {
+        // TODO - add exception handling here
         List<KeyValuePair<int, string>> drinksMenuWithId = await LoadDrinks(category);
         List<string> drinksMenu = new();
         foreach (var item in drinksMenuWithId)
@@ -77,7 +79,8 @@ public class UI
     {
         Console.Clear();
         DrawTitle();
-
+        
+        // TODO - add exception handling here
         RecipeResponse recipe = await ApiHelper.GetRecipe(drinkChoiceId);
 
         var table = new Table().HideHeaders();
@@ -140,6 +143,7 @@ public class UI
         Console.Clear();
 
         // call API to get recipe from ID and load into object
+        // TODO - add exception handling here
         RecipeResponse recipe = await ApiHelper.GetRecipe(drinkChoiceId);
 
         // Print Table headers
@@ -165,6 +169,7 @@ public class UI
         var _categoryMenu = new List<string>();
         if (_categoryMenu.Count == 0)
         {
+            // TODO - add exception handling here
             _categoryMenu!.AddRange(await ApiHelper.GetAllCategories());
             _categoryMenu.Insert(0, "Exit");
             return _categoryMenu;
@@ -175,6 +180,7 @@ public class UI
     public static async Task<List<KeyValuePair<int, string>>> LoadDrinks(string category)
     {
         var _drinksMenu = new List<KeyValuePair<int, string>>();
+        // TODO - add exception handling here
         _drinksMenu.AddRange(await ApiHelper.GetDrinksList(category));
         _drinksMenu.Insert(0, new KeyValuePair<int, string>(_drinksMenu.Count, "Back"));
         return _drinksMenu;
