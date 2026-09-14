@@ -1,4 +1,4 @@
-﻿using DrinksAPI.Models;
+using DrinksAPI.Models;
 using DrinksAPI.Services;
 using DrinksApp.Models;
 using Newtonsoft.Json;
@@ -36,6 +36,7 @@ public static class ApiHelper
         else
         {
             throw new Exception(response.ReasonPhrase);
+            // TODO - need to add exception handling to the calling method
         }
     }
 
