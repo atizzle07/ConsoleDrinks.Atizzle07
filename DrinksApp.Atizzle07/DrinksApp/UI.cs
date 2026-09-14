@@ -36,9 +36,14 @@ public class UI
     }
     public static async Task<string> GetCategoryChoice()
     {
-        // TODO - add exception handling here
-        List<string> categoryMenu = await LoadCategories();
-
+		try
+		{
+			List<string> categoryMenu = await LoadCategories();
+		} 
+		catch ()
+		{
+			// TODO - add exception handling here
+		}
         Console.Clear();
         DrawTitle();
         var userInput = AnsiConsole.Prompt(
@@ -49,8 +54,15 @@ public class UI
     }
     public static async Task<string> GetDrinkChoice(string category)
     {
-        // TODO - add exception handling here
-        List<KeyValuePair<int, string>> drinksMenuWithId = await LoadDrinks(category);
+		try
+		{
+			List<KeyValuePair<int, string>> drinksMenuWithId = await LoadDrinks(category);
+		} 
+		catch ()
+		{
+			// TODO - add exception handling here
+		}
+		    
         List<string> drinksMenu = new();
         foreach (var item in drinksMenuWithId)
             drinksMenu.Add(item.Value);
@@ -80,9 +92,15 @@ public class UI
         Console.Clear();
         DrawTitle();
         
-        // TODO - add exception handling here
-        RecipeResponse recipe = await ApiHelper.GetRecipe(drinkChoiceId);
-
+		try
+		{
+			RecipeResponse recipe = await ApiHelper.GetRecipe(drinkChoiceId);
+		} 
+		catch ()
+		{
+			// TODO - add exception handling here
+		}
+        
         var table = new Table().HideHeaders();
         var ingredientsTable = new Table();
 
@@ -143,8 +161,15 @@ public class UI
         Console.Clear();
 
         // call API to get recipe from ID and load into object
-        // TODO - add exception handling here
-        RecipeResponse recipe = await ApiHelper.GetRecipe(drinkChoiceId);
+
+        try
+		{
+			RecipeResponse recipe = await ApiHelper.GetRecipe(drinkChoiceId);
+		} 
+		catch ()
+		{
+			// TODO - add exception handling here
+		}
 
         // Print Table headers
         Console.WriteLine("Type\t\tValue");
@@ -181,12 +206,16 @@ public class UI
     {
         var _drinksMenu = new List<KeyValuePair<int, string>>();
         // TODO - add exception handling here
-        _drinksMenu.AddRange(await ApiHelper.GetDrinksList(category));
+		try
+		{
+			_drinksMenu.AddRange(await ApiHelper.GetDrinksList(category));
+		} 
+		catch ()
+		{
+			// TODO - add exception handling here
+		}
         _drinksMenu.Insert(0, new KeyValuePair<int, string>(_drinksMenu.Count, "Back"));
         return _drinksMenu;
     }
-
-
-
     #endregion
 }
