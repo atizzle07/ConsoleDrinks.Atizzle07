@@ -1,18 +1,19 @@
 using DrinksAPI.Models;
-using DrinksAPI.Services;
 using DrinksApp.Models;
 using Newtonsoft.Json;
 
-namespace DrinksApp.Services;
+namespace DrinksAPI.Services;
 
 public static class ApiHelper
 {
-    public static HttpClient? ApiClient { get; private set; }
+    private static HttpClient? ApiClient { get; set; }
 
     public static void InitializeClient()
     {
         ApiClient = new();
-        ApiClient.BaseAddress = new Uri("https://www.thecocktaildb.com/api/json/v1/1/");
+        
+        // ApiClient.BaseAddress = new Uri("https://www.thecocktaildb.com/api/json/v1/1/");
+        ApiClient.BaseAddress = new Uri("https://www.thecocktaildb.com/api/json/v1/10/");
         ApiClient.DefaultRequestHeaders.Accept.Clear();
         ApiClient.DefaultRequestHeaders.Add("Accept", "application/json");
     }
@@ -26,17 +27,16 @@ public static class ApiHelper
             string jsonResponse = await response.Content.ReadAsStringAsync();
             CategoryResponse cr = JsonConvert.DeserializeObject<CategoryResponse>(jsonResponse)!;
 
-            List<string> Items = new();
+            List<string> items = new();
             foreach (CategoryItem item in cr.Drinks)
             {
-                Items.Add(item.Name);
+                items.Add(item.Name);
             }
-            return Items;
+            return items;
         }
         else
-        {
-            throw new Exception(response.ReasonPhrase);
-            // TODO - need to add exception handling to the calling method
+        { 
+            throw new HttpRequestException(response.ReasonPhrase);
         }
     }
 
@@ -49,16 +49,16 @@ public static class ApiHelper
             string jsonResponse = await response.Content.ReadAsStringAsync();
             DrinkResponse dr = JsonConvert.DeserializeObject<DrinkResponse>(jsonResponse)!;
 
-            List<KeyValuePair<int, string>> Items = new();
+            List<KeyValuePair<int, string>> items = new();
             foreach (DrinkItem item in dr.Drinks)
             {
-                Items.Add(new KeyValuePair<int, string>(item.Id, item.Name));
+                items.Add(new KeyValuePair<int, string>(item.Id, item.Name));
             }
-            return Items;
+            return items;
         }
         else
         {
-            throw new Exception(response.ReasonPhrase);
+            throw new HttpRequestException(response.ReasonPhrase);
         }
     }
 
@@ -71,15 +71,15 @@ public static class ApiHelper
             string jsonResponse = await response.Content.ReadAsStringAsync();
 
             ApiResponse? apiResponse = JsonConvert.DeserializeObject<ApiResponse>(jsonResponse)!; //Takes the raw api response and maps it to the apiresponse class
-            RecipeDTO? recipeDTO = apiResponse?.Drinks?.FirstOrDefault(); //Takes the api response and pulls the list into a DTO object
+            RecipeDTO? recipeDto = apiResponse?.Drinks?.FirstOrDefault(); //Takes the api response and pulls the list into a DTO object
 
-            RecipeResponse recipeResponse = ResponseMapper.ReturnRecipeData(recipeDTO!); // map recipeDTO to recipe object
+            RecipeResponse recipeResponse = ResponseMapper.ReturnRecipeData(recipeDto!); // map recipeDTO to recipe object
             recipeResponse.InstructionsText = Formatter.InstructionsFormat(recipeResponse.InstructionsText);
             return recipeResponse;
         }
         else
         {
-            throw new Exception(response.ReasonPhrase);
+            throw new HttpRequestException(response.ReasonPhrase);
         }
     }
 
