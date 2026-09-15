@@ -47,8 +47,9 @@ public class UI
         catch (HttpRequestException e)
         {
             AnsiConsole.MarkupLine($"[bold italic red]An error occurred accessing online data: {e.Message}[/]");
+            AnsiConsole.MarkupLine($"\n[bold]Press [green]ENTER[/] to exit the application[/]");
             Console.ReadLine();
-            return "";
+            return "Exit";
         }
         Console.Clear();
         DrawTitle();
@@ -68,7 +69,9 @@ public class UI
         catch (HttpRequestException e)
         {
             AnsiConsole.MarkupLine($"[bold italic red]An error occurred accessing online data: {e.Message}[/]");
+            AnsiConsole.MarkupLine($"\n[bold]Press [green]ENTER[/] to exit the application[/]");
             Console.ReadLine();
+            return "Exit";
         }
 		    
         List<string> drinksMenu = new();
@@ -107,7 +110,9 @@ public class UI
         catch (HttpRequestException e)
         {
             AnsiConsole.MarkupLine($"[bold italic red]An error occurred accessing online data: {e.Message}[/]");
+            AnsiConsole.MarkupLine($"\n[bold]Press [green]ENTER[/] to exit the application[/]");
             Console.ReadLine();
+            return "Exit";
         }
         
         var table = new Table().HideHeaders();
@@ -202,16 +207,8 @@ public class UI
     private static async Task<List<string>> LoadCategories()
     {
         var categoryMenu = new List<string>();
-        try
-        {
-            categoryMenu!.AddRange(await ApiHelper.GetAllCategories());
-        }
-        catch (HttpRequestException e)
-        {
-            AnsiConsole.MarkupLine($"[bold italic red]An error occurred accessing online data: {e.Message}[/]");
-            Console.ReadLine();
-        }
-        
+
+        categoryMenu!.AddRange(await ApiHelper.GetAllCategories());
         categoryMenu.Insert(0, "Exit");
         return categoryMenu;
     }
@@ -219,15 +216,7 @@ public class UI
     private static async Task<List<KeyValuePair<int, string>>> LoadDrinks(string category)
     {
         var drinksMenu = new List<KeyValuePair<int, string>>();
-        try
-        {
-            drinksMenu.AddRange(await ApiHelper.GetDrinksList(category));
-        } 
-        catch (HttpRequestException e)
-        {
-            AnsiConsole.MarkupLine($"[bold italic red]An error occurred accessing online data: {e.Message}[/]");
-            Console.ReadLine();
-        }
+        drinksMenu.AddRange(await ApiHelper.GetDrinksList(category));
         drinksMenu.Insert(0, new KeyValuePair<int, string>(drinksMenu.Count, "Back"));
         return drinksMenu;
     }

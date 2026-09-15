@@ -12,15 +12,16 @@ public static class ApiHelper
     {
         ApiClient = new();
         
-        // ApiClient.BaseAddress = new Uri("https://www.thecocktaildb.com/api/json/v1/1/");
-        ApiClient.BaseAddress = new Uri("https://www.thecocktaildb.com/api/json/v1/10/");
+        ApiClient.BaseAddress = new Uri("https://www.thecocktaildb.com/api/json/v1/1/"); // correct syntax
+        // ApiClient.BaseAddress = new Uri("https://www.thecocktaildb.com/api/json/v1/10/"); // incorrect syntax for testing
         ApiClient.DefaultRequestHeaders.Accept.Clear();
         ApiClient.DefaultRequestHeaders.Add("Accept", "application/json");
     }
 
     public static async Task<List<string>> GetAllCategories()
     {
-        using HttpResponseMessage response = await ApiClient!.GetAsync("list.php?c=list");
+        using HttpResponseMessage response = await ApiClient!.GetAsync("list.php?c=list"); // correct syntax
+        // using HttpResponseMessage response = await ApiClient!.GetAsync("listt.php?c=list"); // incorrect syntax for testing
 
         if (response.IsSuccessStatusCode)
         {
@@ -36,13 +37,14 @@ public static class ApiHelper
         }
         else
         { 
-            throw new HttpRequestException(response.ReasonPhrase);
+            throw new HttpRequestException($"Error at category endpoint: {response.ReasonPhrase}");
         }
     }
 
     public static async Task<List<KeyValuePair<int, string>>> GetDrinksList(string category)
     {
-        using HttpResponseMessage response = await ApiClient!.GetAsync($"filter.php?c={category}");
+        using HttpResponseMessage response = await ApiClient!.GetAsync($"filter.php?c={category}"); // correct syntax
+        // using HttpResponseMessage response = await ApiClient!.GetAsync($"filterr.php?c={category}"); // incorrect syntax
 
         if (response.IsSuccessStatusCode)
         {
@@ -58,13 +60,14 @@ public static class ApiHelper
         }
         else
         {
-            throw new HttpRequestException(response.ReasonPhrase);
+            throw new HttpRequestException($"Error at drinks endpoint: {response.ReasonPhrase}");
         }
     }
 
     public static async Task<RecipeResponse> GetRecipe(string recipeId)
     {
-        using HttpResponseMessage response = await ApiClient!.GetAsync($"lookup.php?i={recipeId}");
+        // using HttpResponseMessage response = await ApiClient!.GetAsync($"lookup.php?i={recipeId}"); // correct syntax
+        using HttpResponseMessage response = await ApiClient!.GetAsync($"lookupp.php?i={recipeId}"); // incorrect syntax
 
         if (response.IsSuccessStatusCode)
         {
@@ -79,7 +82,7 @@ public static class ApiHelper
         }
         else
         {
-            throw new HttpRequestException(response.ReasonPhrase);
+            throw new HttpRequestException($"Error at recipe endpoint: {response.ReasonPhrase}");
         }
     }
 

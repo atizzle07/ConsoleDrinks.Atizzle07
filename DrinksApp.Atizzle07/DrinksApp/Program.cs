@@ -20,6 +20,8 @@ while (true)
         drinkChoiceId = await UI.GetDrinkChoice(categoryChoice);
         if (drinkChoiceId == "Back")
             break;
+        else if (drinkChoiceId == "Exit")
+            return;
 
         // step 3 - select and display the selected recipe
         recipeChoice = await UI.DisplayRecipeTable(drinkChoiceId);
