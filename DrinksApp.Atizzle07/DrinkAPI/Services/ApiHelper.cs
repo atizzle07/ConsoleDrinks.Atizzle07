@@ -66,8 +66,8 @@ public static class ApiHelper
 
     public static async Task<RecipeResponse> GetRecipe(string recipeId)
     {
-        // using HttpResponseMessage response = await ApiClient!.GetAsync($"lookup.php?i={recipeId}"); // correct syntax
-        using HttpResponseMessage response = await ApiClient!.GetAsync($"lookupp.php?i={recipeId}"); // incorrect syntax
+        using HttpResponseMessage response = await ApiClient!.GetAsync($"lookup.php?i={recipeId}"); // correct syntax
+        // using HttpResponseMessage response = await ApiClient!.GetAsync($"lookupp.php?i={recipeId}"); // incorrect syntax
 
         if (response.IsSuccessStatusCode)
         {
